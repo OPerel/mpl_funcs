@@ -1,7 +1,10 @@
+''' matplotlib bar chart with intercative annotation. '''
+
 import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+# data
 tabs = [{'SOUTH CAROLINA': 1662, 'IDAHO': 10343, 'VIRGINIA': 9689, 'KANSAS': 3634, 'NEBRASKA': 5024, 'TEXAS': 5134},
         {'SOUTH CAROLINA': 8015, 'IDAHO': 57541, 'VIRGINIA': 54272, 'KANSAS': 20370, 'NEBRASKA': 29011, 'TEXAS': 29910},
         {'SOUTH CAROLINA': 15000, 'IDAHO': 40000, 'VIRGINIA': 40000, 'KANSAS': 25000, 'NEBRASKA': 20000, 'TEXAS': 25000}]
@@ -14,6 +17,7 @@ xlabels = list(tabs[0].keys())
 
 fig, ax = plt.subplots(figsize=(9, 5))
 
+# plot data
 plots = []
 colors = []
 for i, tab in enumerate(tabs):
@@ -86,7 +90,4 @@ ax.grid(axis='y', linewidth=0.2)
 fig.tight_layout(rect=(0, 0, 0.9, 0.9))
 
 fig.canvas.mpl_connect("motion_notify_event", hover)
-# print(list(zip(*plots)), '\n')
-# for i in zip(*plots):
-#     print(i)
 plt.show()
