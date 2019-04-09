@@ -21,7 +21,7 @@ fig, ax = plt.subplots(figsize=(9, 5))
 plots = []
 colors = []
 for i, tab in enumerate(tabs):
-    color = list(random.random() for i in range(vals))
+    color = list(random.random() for i in range(3))
     colors.append(color)
     plots.append(
         ax.bar(
@@ -87,6 +87,7 @@ ax.set_xticks(xticks)
 ax.set_xticklabels(xlabels, rotation=45)
 ax.legend()
 ax.grid(axis='y', linewidth=0.2)
+ax.set_frame_on(False)
 fig.tight_layout(rect=(0, 0, 0.9, 0.9))
 
 fig.canvas.mpl_connect("motion_notify_event", hover)
