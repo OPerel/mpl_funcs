@@ -9,7 +9,7 @@ tabs = [{'SOUTH CAROLINA': 1662, 'IDAHO': 10343, 'VIRGINIA': 9689, 'KANSAS': 363
         {'SOUTH CAROLINA': 8015, 'IDAHO': 57541, 'VIRGINIA': 54272, 'KANSAS': 20370, 'NEBRASKA': 29011, 'TEXAS': 29910},
         {'SOUTH CAROLINA': 15000, 'IDAHO': 40000, 'VIRGINIA': 40000, 'KANSAS': 25000, 'NEBRASKA': 20000, 'TEXAS': 25000}]
 
-# random.seed(112)
+random.seed(112)
 
 vals = len(tabs)
 xticks = np.arange(len(tabs[0]))
@@ -35,18 +35,15 @@ for i, tab in enumerate(tabs):
         )
 
 # annotation template
-annots = []
-for i, tab in enumerate(tabs):
-    annot = ax.annotate(
-        "",
-        xy=(0, 0),
-        xytext=(15, 20),
-        textcoords="offset points",
-        arrowprops=dict(arrowstyle='->')
-    )
+annot = ax.annotate(
+    "",
+    xy=(0, 0),
+    xytext=(15, 20),
+    textcoords="offset points",
+    arrowprops=dict(arrowstyle='->')
+)
 
-    annot.set_visible(False)
-    annots.append(annot)
+annot.set_visible(False)
 
 # update annotation with bar data
 def update_annot(i, bar):
@@ -86,7 +83,7 @@ ax.set(title='title', xlabel='xlabel', ylabel='ylabel')
 ax.set_xticks(xticks)
 ax.set_xticklabels(xlabels, rotation=45)
 ax.legend()
-ax.grid(axis='y', linewidth=0.2)
+ax.grid(linewidth=0.3)
 ax.set_frame_on(False)
 fig.tight_layout(rect=(0, 0, 0.9, 0.9))
 

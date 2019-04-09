@@ -2,10 +2,13 @@
 import random
 import matplotlib.pyplot as plt
 
-# data
-tabs = [{random.random() * 10: random.random() * 100 for _ in range(10)} for _ in range(5)]
 
-fig, ax = plt.subplots(figsize=(9.5, 4.5))
+# data
+tabs = [{random.random() * 10: random.random() * 100 for _ in range(20)} for _ in range(10)]
+
+random.seed(107)
+
+fig, ax = plt.subplots(figsize=(9, 5))
 
 # plot data
 labels = []
@@ -24,6 +27,7 @@ for i, tab in enumerate(tabs):
             s=s,
             c=[color],
             linewidths=0.5,
+            alpha=0.6,
             edgecolor='black'
             )
         )
