@@ -1,5 +1,28 @@
-figure.figsize: 9, 5
+''' Costum styles for Kqlmagic charts '''
 
+## Figure
+figure.figsize: 9, 5
+figure.subplot.left    : 0.125  ## the left side of the subplots of the figure
+figure.subplot.right   : 0.85   ## the right side of the subplots of the figure
+figure.subplot.bottom  : 0.20   ## the bottom of the subplots of the figure
+figure.subplot.top     : 0.88   ## the top of the subplots of the figure
+
+## Fonts
+font.cursive: Apple Chancery
+
+## Axes
+axes.linewidth: 0
 axes.grid: True
 
-grid.linewidth: 0.3
+## Grid
+grid.color: 8c8c8c
+grid.linewidth: 0.1
+
+## Legend
+legend.loc: center right
+legend.frameon: False
+legend.fontsize: small
+legend.markerscale: 0.7
+
+## Scatter plot
+scatter.marker: .

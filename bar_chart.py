@@ -4,6 +4,8 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+plt.style.use('./Kqlmagic.mplstyle')
+
 # data
 tabs = [{'SOUTH CAROLINA': 1662, 'IDAHO': 10343, 'VIRGINIA': 9689, 'KANSAS': 3634, 'NEBRASKA': 5024, 'TEXAS': 5134},
         {'SOUTH CAROLINA': 8015, 'IDAHO': 57541, 'VIRGINIA': 54272, 'KANSAS': 20370, 'NEBRASKA': 29011, 'TEXAS': 29910},
@@ -15,7 +17,7 @@ vals = len(tabs)
 xticks = np.arange(len(tabs[0]))
 xlabels = list(tabs[0].keys())
 
-fig, ax = plt.subplots(figsize=(9, 5))
+fig, ax = plt.subplots()
 
 # plot data
 plots = []
@@ -82,10 +84,8 @@ def hover(event):
 ax.set(title='title', xlabel='xlabel', ylabel='ylabel')
 ax.set_xticks(xticks)
 ax.set_xticklabels(xlabels, rotation=45)
-ax.legend()
-ax.grid(linewidth=0.2)
-ax.set_frame_on(False)
-fig.tight_layout(rect=(0, 0, 0.9, 0.9))
+ax.legend(loc='best')
 
 fig.canvas.mpl_connect("motion_notify_event", hover)
+
 plt.show()

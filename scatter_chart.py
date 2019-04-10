@@ -2,6 +2,7 @@
 import random
 import matplotlib.pyplot as plt
 
+plt.style.use('./Kqlmagic.mplstyle')
 
 # data
 tabs = [{random.random() * 10: random.random() * 100 for _ in range(20)} for _ in range(10)]
@@ -23,7 +24,6 @@ for i, tab in enumerate(tabs):
         ax.scatter(
             list(tab.keys()),
             list(tab.values()),
-            marker='.',
             s=s,
             c=[color],
             linewidths=0.5,
@@ -95,20 +95,13 @@ title = 'title'
 ylabel = 'yaxis'
 xlabel = 'xaxis'
 
-ax.set_frame_on(False)
-ax.grid(linewidth=0.2)
 ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
 ax.legend(
     labels=labels,
-    loc='center right',
     bbox_to_anchor=(0.95, 0.5),
-    bbox_transform=fig.transFigure,
-    markerscale=0.7,
-    fontsize='small',
-    frameon=False
+    bbox_transform=fig.transFigure
 )
 
-fig.tight_layout(rect=(0, 0, 0.9, 0.99))
-#     plt.subplot_tool()
 fig.canvas.mpl_connect('motion_notify_event', hover)
+
 plt.show()
