@@ -1,4 +1,4 @@
-''' Costum styles for Kqlmagic charts '''
+## Costum styles for Kqlmagic charts
 
 ## Figure
 figure.figsize: 9, 5
@@ -23,6 +23,10 @@ legend.loc: center right
 legend.frameon: False
 legend.fontsize: small
 legend.markerscale: 0.7
+
+## Lines
+lines.linewidth: 0.8
+lines.marker: .
 
 ## Scatter plot
 scatter.marker: .
