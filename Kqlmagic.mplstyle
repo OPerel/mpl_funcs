@@ -1,0 +1,5 @@
+figure.figsize: 9, 5
+
+axes.grid: True
+
+grid.linewidth: 0.3
