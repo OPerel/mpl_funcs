@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.ticker import FuncFormatter
 
+plt.style.use('./Kqlmagic.mplstyle')
+
 # generate data
 tabs = [{dt.datetime(2018, 5, 1) + i * dt.timedelta(days=7): i * random.random() for i in range(10)} for _ in range(10)]
 
@@ -20,10 +22,7 @@ for i, tab in enumerate(tabs):
     plot, = ax.plot_date(
         date,
         list(tab.values()),
-        marker='.',
-        markersize=6,
         linestyle='-',
-        linewidth=0.6,
         c=color,
         label=i
     )
@@ -115,24 +114,17 @@ def hover(event):
         fig.canvas.draw_idle()
 
 # fig and ax properties
+title = 'Time Chart'
 ylabel = 'yaxis'
 xlabel = 'xaxis'
-title = 'title'
 
 ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
-ax.grid(linewidth=0.2)
+
 ax.legend(
-    loc='center right',
     bbox_to_anchor=(0.99, 0.6),
     bbox_transform=fig.transFigure,
-    markerscale=0.7,
-    fontsize='small',
-    frameon=False
 )
 
-ax.set_frame_on(False)
-
-fig.tight_layout(rect=(0, 0, 0.9, 0.99))
-#     plt.subplot_tool()
 fig.canvas.mpl_connect("motion_notify_event", hover)
+
 plt.show()
