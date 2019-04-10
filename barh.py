@@ -1,4 +1,4 @@
-''' matplotlib bar chart with intercative annotation. '''
+''' matplotlib horizontal bar chart with intercative annotation. '''
 
 import random
 import matplotlib.pyplot as plt
@@ -6,30 +6,25 @@ import numpy as np
 
 plt.style.use('./Kqlmagic.mplstyle')
 
-# data
 tabs = [{'SOUTH CAROLINA': 1662, 'IDAHO': 10343, 'VIRGINIA': 9689, 'KANSAS': 3634, 'NEBRASKA': 5024, 'TEXAS': 5134},
         {'SOUTH CAROLINA': 8015, 'IDAHO': 57541, 'VIRGINIA': 54272, 'KANSAS': 20370, 'NEBRASKA': 29011, 'TEXAS': 29910},
         {'SOUTH CAROLINA': 15000, 'IDAHO': 40000, 'VIRGINIA': 40000, 'KANSAS': 25000, 'NEBRASKA': 20000, 'TEXAS': 25000}]
 
-random.seed(112)
-
 vals = len(tabs)
-xticks = np.arange(len(tabs[0]))
-xlabels = list(tabs[0].keys())
+yticks = np.arange(len(tabs[0]))
 
 fig, ax = plt.subplots()
 
-# plot data
 plots = []
 colors = []
 for i, tab in enumerate(tabs):
-    color = list(random.random() for i in range(3))
+    color = list(random.random() for _ in range(3))
     colors.append(color)
     plots.append(
-        ax.bar(
-            xticks - 0.7 / 2. + i / float(vals) * 0.7,
-            list(tab.values()),
-            width=0.7 / float(vals),
+        ax.barh(
+            yticks - 0.8 / 2. + i / float(vals) * 0.8,
+            list(tabs[i].values()),
+            height=0.8 / float(vals),
             align='edge',
             color=color,
             label=i
@@ -38,54 +33,55 @@ for i, tab in enumerate(tabs):
 
 # annotation template
 annot = ax.annotate(
-    "",
+    '',
     xy=(0, 0),
-    xytext=(15, 20),
-    textcoords="offset points",
+    xytext=(20, 10),
+    textcoords='offset points',
     arrowprops=dict(arrowstyle='->')
 )
 
 annot.set_visible(False)
 
-# update annotation with bar data
 def update_annot(i, bar):
-    x = bar.get_x() + bar.get_width() / 2.
-    y = bar.get_y() + bar.get_height()
-    annot.xy = (x, y)
+    y = bar.get_x() + bar.get_width()
+    x = bar.get_y() + bar.get_height()
+    annot.xy = (y, x)
     text = f'{i}: {y}'
     annot.set_text(text)
     annot.set_bbox(
         dict(
             boxstyle='round',
+            facecolor=colors[i],
             lw=0,
-            color=colors[i],
             alpha=0.8
             )
         )
 
-# activate annotation on hover
 def hover(event):
-    # vis = annot.get_visible()
+    vis = annot.get_visible()
     if event.inaxes:
         for i, plot in enumerate(plots):
             for bar in plot:
                 cont, _ = bar.contains(event)
                 if cont:
-                    # col = [plot[j] for plot in plots]
-                    # col = list(zip(*plots))[j]
                     update_annot(i, bar)
                     annot.set_visible(True)
                     fig.canvas.draw_idle()
                     return
-                else:
-                    annot.set_visible(False)
-                    fig.canvas.draw_idle()
+    if vis:
+        annot.set_visible(False)
+        fig.canvas.draw_idle()
 
-ax.set(title='title', xlabel='xlabel', ylabel='ylabel')
-ax.set_xticks(xticks)
-ax.set_xticklabels(xlabels, rotation=45)
+title = 'horizontal Bar Chart'
+xlabel = 'xaxis'
+ylabel = 'taxis'
+ylabels = list(tabs[0].keys())
+
+ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
+ax.set_yticks(yticks)
+ax.set_yticklabels(ylabels)
 ax.legend(loc='best')
 
-fig.canvas.mpl_connect("motion_notify_event", hover)
+fig.canvas.mpl_connect('motion_notify_event', hover)
 
 plt.show()

@@ -1,6 +1,7 @@
 # Matplotlib functions
+### With interactive annotation and some custom styling.
 
-Learning matplotlib.
+Learning matplotlib.\
 Any suggestions or pull requests are welcome.
 ---
 One issue with time_chart.py is FuncFormatter(func), which calls the callback on
