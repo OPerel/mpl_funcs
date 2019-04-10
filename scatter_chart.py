@@ -96,7 +96,7 @@ ylabel = 'yaxis'
 xlabel = 'xaxis'
 
 ax.set_frame_on(False)
-ax.grid(linewidth=0.3)
+ax.grid(linewidth=0.2)
 ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
 ax.legend(
     labels=labels,

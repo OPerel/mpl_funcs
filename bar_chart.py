@@ -83,7 +83,7 @@ ax.set(title='title', xlabel='xlabel', ylabel='ylabel')
 ax.set_xticks(xticks)
 ax.set_xticklabels(xlabels, rotation=45)
 ax.legend()
-ax.grid(linewidth=0.3)
+ax.grid(linewidth=0.2)
 ax.set_frame_on(False)
 fig.tight_layout(rect=(0, 0, 0.9, 0.9))
 
