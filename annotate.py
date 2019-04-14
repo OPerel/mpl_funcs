@@ -1,8 +1,11 @@
-import matplotlib
-import matplotlib.dates as mdates
 import datetime as dt
+import matplotlib as mpl
+import matplotlib.dates as mdates
 
 class Annotation():
+    ''' generate interactive annotations for Kqlmagic charts.
+        annotate with point data on hover over the artist.
+    '''
     def __init__(self, figure, axes, plots, data, colors):
         self.fig = figure
         self.ax = axes
@@ -11,7 +14,7 @@ class Annotation():
         self.colors = colors
 
     def annotation_temp(self):
-        # annotation template
+        ''' annotation template '''
         ann = self.ax.annotate(
             "",
             xy=(0, 0),
@@ -23,7 +26,8 @@ class Annotation():
         return ann
 
     def xaxis_annotation_temp(self):
-        ann = self.ax.annotate(
+        ''' xaxis annotation template '''
+        annx = self.ax.annotate(
             '',
             xy =(0, 0),
             xycoords=('data', 'axes fraction'),
@@ -34,15 +38,15 @@ class Annotation():
             arrowprops=dict(arrowstyle='->', connectionstyle='arc3, rad=-0.3')
         )
 
-        return ann
+        return annx
 
     def annotate_bars(self):
-        # annotate bar charts
+        ''' annotate bar charts '''
         annot = self.annotation_temp()
         annot.set_visible(False)
 
-        # update annotation with bar data
         def update_annot(i, bar):
+            ''' update annotation with bar data '''
             if self.plots[0][0].properties()['y'] == 0:
                 x = bar.get_x() + bar.get_width() / 2.
                 y = bar.get_y() + bar.get_height()
@@ -62,8 +66,8 @@ class Annotation():
                     )
                 )
 
-        # activate annotation on hover
         def hover(event):
+            ''' activate annotation on hover '''
             vis = annot.get_visible()
             if event.inaxes:
                 for i, plot in enumerate(self.plots):
@@ -90,9 +94,9 @@ class Annotation():
         annot.set_visible(False)
         annotx.set_visible(False)
 
-        # update annotation with point data
         def update_annot(i, ind):
-            if isinstance(self.plots[i], matplotlib.collections.PathCollection):
+            ''' update annotation with point data '''
+            if isinstance(self.plots[i], mpl.collections.PathCollection):
                 pos = self.plots[i].get_offsets()[ind["ind"][0]]
                 annot.xy = pos
                 text = f'{i}: {str(pos[1])}'
@@ -110,12 +114,13 @@ class Annotation():
                 )
             )
 
+            ## update xaxis annotation
             # if ax.plot_date
             if isinstance(list(self.data[i].keys())[0], dt.datetime):
                 annotx.xy = (x[ind['ind'][0]], 0)
                 textx = mdates.num2date(x[ind['ind'][0]]).strftime('%H:%M \n %b %d, %Y')
             # if ax.scatter
-            elif isinstance(self.plots[i], matplotlib.collections.PathCollection):
+            elif isinstance(self.plots[i], mpl.collections.PathCollection):
                 annotx.xy = (pos[0], 0)
                 textx = pos[0]
                 annotx.set_text(textx)
@@ -127,6 +132,7 @@ class Annotation():
             annotx.set_text(textx)
 
         def hover(event):
+            ''' activate annotation on hover '''
             vis = annot.get_visible()
             if event.inaxes:
                 for i, plot in enumerate(self.plots):
