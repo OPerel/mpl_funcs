@@ -4,6 +4,8 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+from annotate import Annotation
+
 plt.style.use('./Kqlmagic.mplstyle')
 
 # data
@@ -36,56 +38,57 @@ for i, tab in enumerate(tabs):
             )
         )
 
-# annotation template
-annot = ax.annotate(
-    "",
-    xy=(0, 0),
-    xytext=(15, 20),
-    textcoords="offset points",
-    arrowprops=dict(arrowstyle='->')
-)
-
-annot.set_visible(False)
-
-# update annotation with bar data
-def update_annot(i, bar):
-    x = bar.get_x() + bar.get_width() / 2.
-    y = bar.get_y() + bar.get_height()
-    annot.xy = (x, y)
-    text = f'{i}: {y}'
-    annot.set_text(text)
-    annot.set_bbox(
-        dict(
-            boxstyle='round',
-            lw=0,
-            color=colors[i],
-            alpha=0.8
-            )
-        )
-
-# activate annotation on hover
-def hover(event):
-    # vis = annot.get_visible()
-    if event.inaxes:
-        for i, plot in enumerate(plots):
-            for bar in plot:
-                cont, _ = bar.contains(event)
-                if cont:
-                    # col = [plot[j] for plot in plots]
-                    # col = list(zip(*plots))[j]
-                    update_annot(i, bar)
-                    annot.set_visible(True)
-                    fig.canvas.draw_idle()
-                    return
-                else:
-                    annot.set_visible(False)
-                    fig.canvas.draw_idle()
+# # annotation template
+# annot = ax.annotate(
+#     "",
+#     xy=(0, 0),
+#     xytext=(15, 20),
+#     textcoords="offset points",
+#     arrowprops=dict(arrowstyle='->')
+# )
+#
+# annot.set_visible(False)
+#
+# # update annotation with bar data
+# def update_annot(i, bar):
+#     x = bar.get_x() + bar.get_width() / 2.
+#     y = bar.get_y() + bar.get_height()
+#     annot.xy = (x, y)
+#     text = f'{i}: {y}'
+#     annot.set_text(text)
+#     annot.set_bbox(
+#         dict(
+#             boxstyle='round',
+#             lw=0,
+#             color=colors[i],
+#             alpha=0.8
+#             )
+#         )
+#
+# # activate annotation on hover
+# def hover(event):
+#     # vis = annot.get_visible()
+#     if event.inaxes:
+#         for i, plot in enumerate(plots):
+#             for bar in plot:
+#                 cont, _ = bar.contains(event)
+#                 if cont:
+#                     # col = [plot[j] for plot in plots]
+#                     # col = list(zip(*plots))[j]
+#                     update_annot(i, bar)
+#                     annot.set_visible(True)
+#                     fig.canvas.draw_idle()
+#                     return
+#                 else:
+#                     annot.set_visible(False)
+#                     fig.canvas.draw_idle()
 
 ax.set(title='title', xlabel='xlabel', ylabel='ylabel')
 ax.set_xticks(xticks)
 ax.set_xticklabels(xlabels, rotation=45)
 ax.legend(loc='best')
-
-fig.canvas.mpl_connect("motion_notify_event", hover)
+annot = Annotation(fig, ax, plots, colors)
+annot.annotate()
+# fig.canvas.mpl_connect("motion_notify_event", hover)
 
 plt.show()
