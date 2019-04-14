@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.ticker import FuncFormatter
 
+from annotate import Annotation
+
 plt.style.use('./Kqlmagic.mplstyle')
 
 # generate data
 tabs = [{dt.datetime(2018, 5, 1) + i * dt.timedelta(days=7): i * random.random() for i in range(10)} for _ in range(10)]
-
 fig, ax = plt.subplots(figsize=(9, 5))
 
 # plot data
@@ -56,63 +57,6 @@ ax.xaxis.set_major_locator(locator)
 formatter = FuncFormatter(format_dates)
 ax.xaxis.set_major_formatter(formatter)
 
-# annotate on hover
-annot = ax.annotate(
-    '',
-    xy=(0, 0),
-    xytext=(40, 20),
-    textcoords='offset points',
-    arrowprops=dict(arrowstyle='-[', connectionstyle='arc3, rad=0.3')
-)
-
-annotx = ax.annotate(
-    '',
-    xy=(0, 0),
-    xycoords=('data', 'axes fraction'),
-    xytext=(-20, -40),
-    textcoords='offset points',
-    bbox=dict(boxstyle='round', fc='grey', lw=0),
-    horizontalalignment='center',
-    arrowprops=dict(arrowstyle='->', connectionstyle='arc3, rad=0.3'),
-)
-
-annot.set_visible(False)
-annotx.set_visible(False)
-
-def update_annot(i, ind):
-    x, y = plots[i].get_data()
-    annot.xy = (x[ind['ind'][0]], y[ind['ind'][0]])
-    text = f'{i}: {y[ind["ind"][0]]}'
-    annot.set_text(text)
-    annot.set_bbox(
-        dict(
-            boxstyle='round',
-            facecolor=colors[i],
-            lw=0,
-            alpha=0.8
-        )
-    )
-
-    annotx.xy = (x[ind['ind'][0]], 0)
-    textx = mdates.num2date(x[ind['ind'][0]]).strftime('%H:%M \n %b %d, %Y')
-    annotx.set_text(textx)
-
-def hover(event):
-    vis = annot.get_visible()
-    if event.inaxes:
-        for i, plot in enumerate(plots):
-            cont, ind = plot.contains(event)
-            if cont:
-                update_annot(i, ind)
-                annot.set_visible(True)
-                annotx.set_visible(True)
-                fig.canvas.draw_idle()
-                return
-    if vis:
-        annot.set_visible(False)
-        annotx.set_visible(False)
-        fig.canvas.draw_idle()
-
 # fig and ax properties
 title = 'Time Chart'
 ylabel = 'yaxis'
@@ -125,6 +69,6 @@ ax.legend(
     bbox_transform=fig.transFigure,
 )
 
-fig.canvas.mpl_connect("motion_notify_event", hover)
+Annotation(fig, ax, plots, tabs, colors).annotate_lines()
 
 plt.show()
