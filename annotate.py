@@ -27,11 +27,11 @@ class Annotation():
             '',
             xy =(0, 0),
             xycoords=('data', 'axes fraction'),
-            xytext=(0, -60),
+            xytext=(40, -30),
             textcoords='offset points',
             bbox=dict(boxstyle='round', fc='grey', lw=0),
             horizontalalignment='center',
-            arrowprops=dict(arrowstyle='->')
+            arrowprops=dict(arrowstyle='->', connectionstyle='arc3, rad=-0.3')
         )
 
         return ann
