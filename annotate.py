@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 
 class Annotation():
-    def __init__(self, figure, axes, plot, colors):
+    def __init__(self, figure, axes, plots, colors):
         self.fig = figure
         self.ax = axes
-        self.plot = plot
+        self.plots = plots
         self.colors = colors
 
     def annotate(self):
@@ -21,9 +21,14 @@ class Annotation():
 
         # update annotation with bar data
         def update_annot(i, bar):
-            x = bar.get_x() + bar.get_width() / 2.
-            y = bar.get_y() + bar.get_height()
-            annot.xy = (x, y)
+            if self.plots[0][0].properties()['y'] == 0:
+                x = bar.get_x() + bar.get_width() / 2.
+                y = bar.get_y() + bar.get_height()
+                annot.xy = (x, y)
+            else:
+                y = bar.get_x() + bar.get_width()
+                x = bar.get_y() + bar.get_height()
+                annot.xy = (y, x)
             text = f'{i}: {y}'
             annot.set_text(text)
             annot.set_bbox(
@@ -39,7 +44,7 @@ class Annotation():
         def hover(event):
             # vis = annot.get_visible()
             if event.inaxes:
-                for i, plot in enumerate(self.plot):
+                for i, plot in enumerate(self.plots):
                     for bar in plot:
                         cont, _ = bar.contains(event)
                         if cont:
