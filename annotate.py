@@ -16,7 +16,7 @@ class Annotation():
     def annotation_temp(self):
         ''' annotation template '''
         ann = self.ax.annotate(
-            "",
+            '',
             xy=(0, 0),
             xytext=(15, 20),
             textcoords="offset points",
@@ -29,7 +29,7 @@ class Annotation():
         ''' xaxis annotation template '''
         annx = self.ax.annotate(
             '',
-            xy =(0, 0),
+            xy=(0, 0),
             xycoords=('data', 'axes fraction'),
             xytext=(40, -30),
             textcoords='offset points',
