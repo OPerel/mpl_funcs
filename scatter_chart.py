@@ -2,6 +2,8 @@
 import random
 import matplotlib.pyplot as plt
 
+from annotate import Annotation
+
 plt.style.use('./Kqlmagic.mplstyle')
 
 # data
@@ -32,63 +34,63 @@ for i, tab in enumerate(tabs):
             )
         )
 
-# annotation template
-annot = ax.annotate(
-    '',
-    xy=(0, 0),
-    xytext=(20, 20),
-    textcoords='offset points',
-    arrowprops=dict(arrowstyle='-[')
-)
-
-annotx = ax.annotate(
-    '',
-    xy=(0, 0),
-    xycoords=('data', 'axes fraction'),
-    xytext=(0, -35),
-    textcoords='offset points',
-    bbox=dict(boxstyle='round', fc='grey', lw=0),
-    arrowprops=dict(arrowstyle='->')
-)
-
-annot.set_visible(False)
-annotx.set_visible(False)
-
-# update annotation with point data
-def update_annot(i, ind):
-    pos = plots[i].get_offsets()[ind["ind"][0]]
-    annot.xy = pos
-    text = f'{i}: {str(pos[1])}'
-    annot.set_text(text)
-    annot.set_bbox(
-        dict(
-            boxstyle='round',
-            facecolor=colors[i],
-            lw=0,
-            alpha=0.8
-        )
-    )
-
-    annotx.xy = (pos[0], 0)
-    textx = pos[0]
-    annotx.set_text(textx)
-
-# activate on hover
-def hover(event):
-    vis = annot.get_visible()
-    if event.inaxes:
-        for i, plot in enumerate(plots):
-            cont, ind = plot.contains(event)
-            if cont:
-                update_annot(i, ind)
-                annot.set_visible(True)
-                annotx.set_visible(True)
-                fig.canvas.draw_idle()
-            else:
-                if vis:
-                    annot.set_visible(False)
-                    annotx.set_visible(False)
-                    fig.canvas.draw_idle()
+# # annotation template
+# annot = ax.annotate(
+#     '',
+#     xy=(0, 0),
+#     xytext=(20, 20),
+#     textcoords='offset points',
+#     arrowprops=dict(arrowstyle='-[')
+# )
+#
+# annotx = ax.annotate(
+#     '',
+#     xy=(0, 0),
+#     xycoords=('data', 'axes fraction'),
+#     xytext=(0, -35),
+#     textcoords='offset points',
+#     bbox=dict(boxstyle='round', fc='grey', lw=0),
+#     arrowprops=dict(arrowstyle='->')
+# )
+#
+# annot.set_visible(False)
+# annotx.set_visible(False)
+#
+# # update annotation with point data
+# def update_annot(i, ind):
+#     pos = plots[i].get_offsets()[ind["ind"][0]]
+#     annot.xy = pos
+#     text = f'{i}: {str(pos[1])}'
+#     annot.set_text(text)
+#     annot.set_bbox(
+#         dict(
+#             boxstyle='round',
+#             facecolor=colors[i],
+#             lw=0,
+#             alpha=0.8
+#         )
+#     )
+#
+#     annotx.xy = (pos[0], 0)
+#     textx = pos[0]
+#     annotx.set_text(textx)
+#
+# # activate on hover
+# def hover(event):
+#     vis = annot.get_visible()
+#     if event.inaxes:
+#         for i, plot in enumerate(plots):
+#             cont, ind = plot.contains(event)
+#             if cont:
+#                 update_annot(i, ind)
+#                 annot.set_visible(True)
+#                 annotx.set_visible(True)
+#                 fig.canvas.draw_idle()
+#             else:
+#                 if vis:
+#                     annot.set_visible(False)
+#                     annotx.set_visible(False)
+#                     fig.canvas.draw_idle()
 
 # figure and axes properties
 title = 'title'
@@ -101,7 +103,8 @@ ax.legend(
     bbox_to_anchor=(0.95, 0.5),
     bbox_transform=fig.transFigure
 )
-
-fig.canvas.mpl_connect('motion_notify_event', hover)
+# print(type(Annotation(fig, ax, plots, tabs, colors).plots[0]))
+Annotation(fig, ax, plots, tabs, colors).annotate_lines()
+# fig.canvas.mpl_connect('motion_notify_event', hover)
 
 plt.show()

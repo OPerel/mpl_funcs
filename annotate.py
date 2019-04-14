@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.dates as mdates
 import datetime as dt
 
@@ -26,7 +27,7 @@ class Annotation():
             '',
             xy =(0, 0),
             xycoords=('data', 'axes fraction'),
-            xytext=(0, -20),
+            xytext=(0, -60),
             textcoords='offset points',
             bbox=dict(boxstyle='round', fc='grey', lw=0),
             horizontalalignment='center',
@@ -34,9 +35,6 @@ class Annotation():
         )
 
         return ann
-
-    # def update_bar_annotatin(self):
-
 
     def annotate_bars(self):
         # annotate bar charts
@@ -92,10 +90,16 @@ class Annotation():
         annot.set_visible(False)
         annotx.set_visible(False)
 
+        # update annotation with point data
         def update_annot(i, ind):
-            x, y = self.plots[i].get_data()
-            annot.xy = (x[ind['ind'][0]], y[ind['ind'][0]])
-            text = f'{i}: {y[ind["ind"][0]]}'
+            if isinstance(self.plots[i], matplotlib.collections.PathCollection):
+                pos = self.plots[i].get_offsets()[ind["ind"][0]]
+                annot.xy = pos
+                text = f'{i}: {str(pos[1])}'
+            else:
+                x, y = self.plots[i].get_data()
+                annot.xy = (x[ind['ind'][0]], y[ind['ind'][0]])
+                text = f'{i}: {y[ind["ind"][0]]}'
             annot.set_text(text)
             annot.set_bbox(
                 dict(
@@ -106,10 +110,18 @@ class Annotation():
                 )
             )
 
-            annotx.xy = (x[ind['ind'][0]], 0)
+            # if ax.plot_date
             if isinstance(list(self.data[i].keys())[0], dt.datetime):
+                annotx.xy = (x[ind['ind'][0]], 0)
                 textx = mdates.num2date(x[ind['ind'][0]]).strftime('%H:%M \n %b %d, %Y')
+            # if ax.scatter
+            elif isinstance(self.plots[i], matplotlib.collections.PathCollection):
+                annotx.xy = (pos[0], 0)
+                textx = pos[0]
+                annotx.set_text(textx)
+            # if ax.plot
             else:
+                annotx.xy = (x[ind['ind'][0]], 0)
                 k = list(self.data[i].keys())
                 textx = f'{k[x[ind["ind"][0]]]}'
             annotx.set_text(textx)
