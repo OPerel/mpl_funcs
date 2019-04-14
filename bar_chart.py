@@ -43,6 +43,6 @@ ax.set_xticks(xticks)
 ax.set_xticklabels(xlabels, rotation=45)
 ax.legend(loc='best')
 
-Annotation(fig, ax, plots, colors).annotate()
+Annotation(fig, ax, plots, tabs, colors).annotate_bars()
 
 plt.show()

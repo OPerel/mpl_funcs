@@ -1,15 +1,17 @@
-import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import datetime as dt
 
 class Annotation():
-    def __init__(self, figure, axes, plots, colors):
+    def __init__(self, figure, axes, plots, data, colors):
         self.fig = figure
         self.ax = axes
         self.plots = plots
+        self.data = data
         self.colors = colors
 
-    def annotate(self):
+    def annotation_temp(self):
         # annotation template
-        annot = self.ax.annotate(
+        ann = self.ax.annotate(
             "",
             xy=(0, 0),
             xytext=(15, 20),
@@ -17,6 +19,28 @@ class Annotation():
             arrowprops=dict(arrowstyle='->')
         )
 
+        return ann
+
+    def xaxis_annotation_temp(self):
+        ann = self.ax.annotate(
+            '',
+            xy =(0, 0),
+            xycoords=('data', 'axes fraction'),
+            xytext=(0, -20),
+            textcoords='offset points',
+            bbox=dict(boxstyle='round', fc='grey', lw=0),
+            horizontalalignment='center',
+            arrowprops=dict(arrowstyle='->')
+        )
+
+        return ann
+
+    # def update_bar_annotatin(self):
+
+
+    def annotate_bars(self):
+        # annotate bar charts
+        annot = self.annotation_temp()
         annot.set_visible(False)
 
         # update annotation with bar data
@@ -42,7 +66,7 @@ class Annotation():
 
         # activate annotation on hover
         def hover(event):
-            # vis = annot.get_visible()
+            vis = annot.get_visible()
             if event.inaxes:
                 for i, plot in enumerate(self.plots):
                     for bar in plot:
@@ -54,9 +78,57 @@ class Annotation():
                             annot.set_visible(True)
                             self.fig.canvas.draw_idle()
                             return
-                        else:
-                            annot.set_visible(False)
-                            self.fig.canvas.draw_idle()
+            if vis:
+                annot.set_visible(False)
+                self.fig.canvas.draw_idle()
+
+        self.fig.canvas.mpl_connect('motion_notify_event', hover)
+        return self
+
+    def annotate_lines(self):
+        ''' annotate line charts '''
+        annot = self.annotation_temp()
+        annotx = self.xaxis_annotation_temp()
+        annot.set_visible(False)
+        annotx.set_visible(False)
+
+        def update_annot(i, ind):
+            x, y = self.plots[i].get_data()
+            annot.xy = (x[ind['ind'][0]], y[ind['ind'][0]])
+            text = f'{i}: {y[ind["ind"][0]]}'
+            annot.set_text(text)
+            annot.set_bbox(
+                dict(
+                    boxstyle='round',
+                    facecolor=self.colors[i],
+                    lw=0,
+                    alpha=0.8
+                )
+            )
+
+            annotx.xy = (x[ind['ind'][0]], 0)
+            if isinstance(list(self.data[i].keys())[0], dt.datetime):
+                textx = mdates.num2date(x[ind['ind'][0]]).strftime('%H:%M \n %b %d, %Y')
+            else:
+                k = list(self.data[i].keys())
+                textx = f'{k[x[ind["ind"][0]]]}'
+            annotx.set_text(textx)
+
+        def hover(event):
+            vis = annot.get_visible()
+            if event.inaxes:
+                for i, plot in enumerate(self.plots):
+                    cont, ind = plot.contains(event)
+                    if cont:
+                        update_annot(i, ind)
+                        annot.set_visible(True)
+                        annotx.set_visible(True)
+                        self.fig.canvas.draw_idle()
+                        return
+            if vis:
+                annot.set_visible(False)
+                annotx.set_visible(False)
+                self.fig.canvas.draw_idle()
 
         self.fig.canvas.mpl_connect('motion_notify_event', hover)
         return self

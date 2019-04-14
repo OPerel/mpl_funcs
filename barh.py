@@ -44,6 +44,6 @@ ax.set_yticks(yticks)
 ax.set_yticklabels(ylabels)
 ax.legend(loc='best')
 
-Annotation(fig, ax, plots, colors).annotate()
+Annotation(fig, ax, plots, tabs, colors).annotate_bars()
 
 plt.show()
