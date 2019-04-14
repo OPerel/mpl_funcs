@@ -10,7 +10,7 @@ from annotate import Annotation
 plt.style.use('./Kqlmagic.mplstyle')
 
 # generate data
-tabs = [{dt.datetime(2018, 5, 1) + i * dt.timedelta(days=7): i * random.random() for i in range(10)} for _ in range(10)]
+tabs = [{dt.datetime(2018, 5, 1) + i * dt.timedelta(hours=8): i * random.random() for i in range(10)} for _ in range(10)]
 fig, ax = plt.subplots(figsize=(9, 5))
 
 # plot data

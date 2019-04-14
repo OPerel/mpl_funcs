@@ -96,10 +96,12 @@ class Annotation():
 
         def update_annot(i, ind):
             ''' update annotation with point data '''
+            # if ax.scatter
             if isinstance(self.plots[i], mpl.collections.PathCollection):
                 pos = self.plots[i].get_offsets()[ind["ind"][0]]
                 annot.xy = pos
                 text = f'{i}: {str(pos[1])}'
+            # if ax.plot or ax.plot_date
             else:
                 x, y = self.plots[i].get_data()
                 annot.xy = (x[ind['ind'][0]], y[ind['ind'][0]])

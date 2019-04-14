@@ -9,9 +9,9 @@ plt.style.use('./Kqlmagic.mplstyle')
 # data
 tabs = [{random.random() * 10: random.random() * 100 for _ in range(20)} for _ in range(10)]
 
-random.seed(107)
+# random.seed(107)
 
-fig, ax = plt.subplots(figsize=(9, 5))
+fig, ax = plt.subplots()
 
 # plot data
 labels = []
