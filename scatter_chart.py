@@ -35,7 +35,7 @@ for i, tab in enumerate(tabs):
         )
 
 # figure and axes properties
-title = 'title'
+title = 'Scatter chart'
 ylabel = 'yaxis'
 xlabel = 'xaxis'
 
