@@ -3,7 +3,7 @@ import random
 import math
 import matplotlib.pyplot as plt
 
-# TODO: multiple axes: plotting, annotation, legends, layout and style
+# TODO: multiple axes: plotting single pie, annotation, legends, layout and style
 
 plt.style.use('./Kqlmagic.mplstyle')
 
